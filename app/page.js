@@ -1,4 +1,3 @@
-
 export default function Home() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-blue-50">
@@ -17,10 +16,10 @@ export default function Home() {
         </div>
       </div>
 
-      {/*Image */}
+      {/* Image */}
       <div className="flex-1 p-8">
         <img
-          src="/images/jeopardy-board.png"
+          src="/images/jeopardy-board.png" 
           alt="Jeopardy Board"
           className="w-full h-auto object-contain rounded-lg shadow-lg"
         />
