@@ -3,11 +3,8 @@ export default function Categories() {
       "General Knowledge",
       "Science",
       "History",
-      "General Mathematics",
       "Geography",
       "Music",
-      "Video Games",
-      "Sports",
       "Movies",
     ];
   
