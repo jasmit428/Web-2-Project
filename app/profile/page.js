@@ -8,7 +8,6 @@ export default function Profile() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // aiana will cotinue the auth tomorrow
     //fetch the user data using firebase authentication
     const mockUser = {
       name: "Aiana Sevilla",
@@ -21,7 +20,7 @@ export default function Profile() {
   }, []);
 
   const handleLogout = () => {
-    //logout button
+    //logout message
     alert("Logged out successfully!");
     router.push("/"); //return to homepage on logout
   };
@@ -46,15 +45,15 @@ export default function Profile() {
 
         {/* View Leaderboard Button */}
         <div className="mt-6">
-          <Link href="/leaderboard"> 
+          <Link href="/categories"> 
             <button className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
-              View Leaderboard 
+              Beat Your High Score! 
             </button>
           </Link>
         </div>
       </div>
 
-      {/* Logout Button (Separate from Profile Card) */}
+      {/* Logout Button */}
       <div className="mt-6">
         <button
           onClick={handleLogout}

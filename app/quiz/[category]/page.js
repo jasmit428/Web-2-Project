@@ -94,6 +94,7 @@ export default function QuizCategory() {
           >
             Play Again
           </button>
+          <div className="mt-4" />
           <button
             onClick={() => window.location.href = "/"}
             className="px-6 py-3 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition"
