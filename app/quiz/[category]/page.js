@@ -710,13 +710,12 @@ export default function QuizCategory() {
   const [revealed, setRevealed] = useState({});
   const [score, setScore] = useState(0);
   const [timers, setTimers] = useState({});
-  const [activeQuestion, setActiveQuestion] = useState(null); // Track the currently active question
+  const [activeQuestion, setActiveQuestion] = useState(null);
 
   const totalQuestions = subcategories.length * difficultyLevels.length;
   const completedCount = Object.values(revealed).filter((val) => val === "scored").length;
   const isGameOver = completedCount === totalQuestions && totalQuestions > 0;
 
-  // Fetch subcategories
   useEffect(() => {
     const fetchSubcategories = async () => {
       const ref = doc(db, "category_subcategories", formattedCategory);
@@ -731,7 +730,6 @@ export default function QuizCategory() {
     fetchSubcategories();
   }, [formattedCategory]);
 
-  // Fetch questions
   useEffect(() => {
     const fetchQuestions = async () => {
       const all = {};
@@ -745,22 +743,18 @@ export default function QuizCategory() {
     if (subcategories.length) fetchQuestions();
   }, [subcategories]);
 
-  // Function to update user stats in Firestore
   const updateUserStats = async () => {
     const user = auth.currentUser;
-    if (!user) {
-      console.log("No user logged in!");
-      return;
-    }
-
+    if (!user) return;
     const userRef = doc(db, "users", user.uid);
+
     try {
-      const docSnap = await getDoc(userRef);
+      const snap = await getDoc(userRef);
       let gamesPlayed = 0;
       let highScore = 0;
 
-      if (docSnap.exists()) {
-        const data = docSnap.data();
+      if (snap.exists()) {
+        const data = snap.data();
         gamesPlayed = data.gamesPlayed || 0;
         highScore = data.highScore || 0;
       }
@@ -770,27 +764,20 @@ export default function QuizCategory() {
 
       await setDoc(
         userRef,
-        {
-          gamesPlayed,
-          highScore,
-        },
+        { gamesPlayed, highScore },
         { merge: true }
       );
-
-      console.log("User stats updated: ", { gamesPlayed, highScore });
     } catch (error) {
-      console.error("Error updating user stats: ", error);
+      console.error("Error updating stats:", error);
     }
   };
 
-  // Update stats when game is over
   useEffect(() => {
     if (isGameOver) {
       updateUserStats();
     }
   }, [isGameOver, score]);
 
-  // Handle exit game button
   const handleExitGame = () => {
     updateUserStats();
     router.push("/categories");
@@ -803,10 +790,9 @@ export default function QuizCategory() {
         if (prev[key] === "question") return { ...prev, [key]: "answer" };
         return { ...prev, [key]: "question" };
       });
+
       if (!revealed[key]) {
-        // Start 15-second timer when question is revealed
         setTimers((prev) => {
-          // Clear any existing timer for the previous active question
           if (activeQuestion && prev[activeQuestion]?.interval) {
             clearInterval(prev[activeQuestion].interval);
           }
@@ -815,11 +801,14 @@ export default function QuizCategory() {
             [key]: { timeLeft: 15, interval: null, timeUp: false },
           };
         });
+
         const interval = setInterval(() => {
           setTimers((prev) => {
             const current = prev[key];
             if (!current || current.timeLeft <= 0) {
               clearInterval(current?.interval);
+              setRevealed((prevRev) => ({ ...prevRev, [key]: "scored" }));
+              setActiveQuestion(null);
               return { ...prev, [key]: { ...current, timeUp: true } };
             }
             return {
@@ -828,8 +817,9 @@ export default function QuizCategory() {
             };
           });
         }, 1000);
+
         setTimers((prev) => ({ ...prev, [key]: { ...prev[key], interval } }));
-        setActiveQuestion(key); // Set this as the active question
+        setActiveQuestion(key);
       }
     }
   };
@@ -838,11 +828,11 @@ export default function QuizCategory() {
     e.stopPropagation();
     const key = `${sub}-${level}`;
     if (timers[key] && !timers[key].timeUp) {
-      clearInterval(timers[key].interval); // Stop the timer
+      clearInterval(timers[key].interval);
       if (isCorrect) setScore((prev) => prev + level);
       setRevealed((prev) => ({ ...prev, [key]: "scored" }));
       setTimers((prev) => ({ ...prev, [key]: { ...prev[key], timeUp: true } }));
-      setActiveQuestion(null); // Clear active question after scoring
+      setActiveQuestion(null);
     }
   };
 
@@ -858,7 +848,6 @@ export default function QuizCategory() {
             ✨ {formattedCategory} Trivia ✨
           </h1>
         </div>
-        {/* Exit Game Button and Timer */}
         <div className="absolute top-0 left-0 m-4 flex items-center space-x-8">
           <button
             onClick={handleExitGame}
@@ -874,30 +863,31 @@ export default function QuizCategory() {
         </div>
       </div>
 
-      {/* Display Score to user after finishing */}
+      {/* Game Over Message */}
       {isGameOver && (
         <div className="absolute inset-0 bg-white bg-opacity-90 flex flex-col items-center justify-center z-50 text-center p-8">
           <h2 className="text-4xl font-bold text-green-600 mb-4">🎉 Congratulations! 🎉</h2>
           <p className="text-xl text-purple-700 mb-6">
-            You completed this Category. You got <strong>{score}</strong> points!
+            You completed this category with <strong>{score}</strong> points!
           </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
-          >
-            Play Again
-          </button>
-          <div className="mt-4" />
-          <button
-            onClick={() => (window.location.href = "/")}
-            className="px-6 py-3 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition"
-          >
-            Back to Homepage
-          </button>
+          <div className="flex gap-4">
+            <button
+              onClick={() => window.location.reload()}
+              className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+            >
+              Play Again
+            </button>
+            <button
+              onClick={() => router.push("/")}
+              className="px-6 py-3 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition"
+            >
+              Back to Homepage
+            </button>
+          </div>
         </div>
       )}
 
-      {/* Jeopardy Design */}
+      {/* Trivia Grid */}
       {Object.keys(questions).length === 0 ? (
         <p className="text-red-500 text-center mt-4">Just a moment...</p>
       ) : (
