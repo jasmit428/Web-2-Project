@@ -18,7 +18,7 @@ export default function Categories() {
             3. Click a card to reveal a question. <br />
             4. Click the card again to see the answer. <br />
             5. Choose whether you got it right (✅) or wrong (❌) to update your score. <br />
-            7. Complete all the card questions to see your final score!
+            6. Complete all the card questions to see your final score!
         </p>
       </div>
 
