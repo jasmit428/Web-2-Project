@@ -4,8 +4,6 @@ export default function Categories() {
       "Science",
       "History",
       "Geography",
-      "Music",
-      "Movies",
     ];
   
     return (
