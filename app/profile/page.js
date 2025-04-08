@@ -9,6 +9,7 @@ import { doc, getDoc } from "firebase/firestore";
 
 export default function Profile() {
   const router = useRouter();
+  // Store user data (fetched from Firestore)
   const [userData, setUserData] = useState({ username: "", email: "", gamesPlayed: 0, highScore: 0 });
   const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);

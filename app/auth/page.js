@@ -1,166 +1,16 @@
-// "use client";
-
-// import { useState } from "react";
-// import { useRouter } from "next/navigation";
-// import { login, signup } from "../_utils/auth";
-
-// export default function AuthPage() {
-//   const [isLogin, setIsLogin] = useState(true);
-//   const router = useRouter();
-
-//   return (
-//     <div className="min-h-screen flex items-center justify-center bg-blue-50">
-//       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-//         <h1 className="text-2xl font-bold mb-6 text-center text-purple-600">
-//           {isLogin ? "Login" : "Create Account"}
-//         </h1>
-//         <div className="flex justify-center space-x-4 mb-6">
-//           <button
-//             onClick={() => setIsLogin(true)}
-//             className={`px-4 py-2 rounded ${
-//               isLogin ? "bg-purple-600 text-white" : "bg-gray-200 text-gray-700"
-//             }`}
-//           >
-//             Login
-//           </button>
-//           <button
-//             onClick={() => setIsLogin(false)}
-//             className={`px-4 py-2 rounded ${
-//               !isLogin ? "bg-purple-600 text-white" : "bg-gray-200 text-gray-700"
-//             }`}
-//           >
-//             Create Account
-//           </button>
-//         </div>
-//         {isLogin ? <LoginForm /> : <SignupForm />}
-//       </div>
-//     </div>
-//   );
-// }
-
-// function LoginForm() {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const router = useRouter();
-
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-//     try {
-//       await login(email, password);
-//       router.push("/");
-//     } catch (error) {
-//       alert("Login failed: " + error.message);
-//     }
-//   };
-
-//   return (
-//     <form onSubmit={handleLogin} className="space-y-4">
-//       <div>
-//         <label className="block text-gray-700">Email</label>
-//         <input
-//           type="email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//           className="w-full p-2 border rounded"
-//           required
-//         />
-//       </div>
-//       <div>
-//         <label className="block text-gray-700">Password</label>
-//         <input
-//           type="password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//           className="w-full p-2 border rounded"
-//           required
-//         />
-//       </div>
-//       <button
-//         type="submit"
-//         className="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700"
-//       >
-//         Login
-//       </button>
-//     </form>
-//   );
-// }
-
-// function SignupForm() {
-//   const [email, setEmail] = useState("");
-//   const [username, setUsername] = useState("");
-//   const [password, setPassword] = useState("");
-//   const router = useRouter();
-
-//   const handleSignup = async (e) => {
-//     e.preventDefault();
-//     try {
-//       await signup(email, username, password);
-//       router.push("/");
-//     } catch (error) {
-//       alert("Signup failed: " + error.message);
-//     }
-//   };
-
-//   return (
-//     <form onSubmit={handleSignup} className="space-y-4">
-//       <div>
-//         <label className="block text-gray-700">Email</label>
-//         <input
-//           type="email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//           className="w-full p-2 border rounded"
-//           required
-//         />
-//       </div>
-//       <div>
-//         <label className="block text-gray-700">Username</label>
-//         <input
-//           type="text"
-//           value={username}
-//           onChange={(e) => setUsername(e.target.value)}
-//           className="w-full p-2 border rounded"
-//           required
-//         />
-//       </div>
-//       <div>
-//         <label className="block text-gray-700">Password</label>
-//         <input
-//           type="password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//           className="w-full p-2 border rounded"
-//           required
-//         />
-//       </div>
-//       <button
-//         type="submit"
-//         className="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700"
-//       >
-//         Create Account
-//       </button>
-//     </form>
-//   );
-// }
-
-
-
-
-
-
-
-
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, signup } from "../_utils/auth";
+import { login, signup } from "../_utils/auth"; // Imports login and signup functions from auth.js for Firebase authentication
 
 export default function AuthPage() {
+  // State to go between Login and Signup (true = Login, false = Signup)
   const [isLogin, setIsLogin] = useState(true);
   const router = useRouter();
 
   return (
+    //Full-screen, centered layout with a light blue background
     <div className="min-h-screen flex items-center justify-center bg-blue-50">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center text-purple-600">
@@ -190,12 +40,15 @@ export default function AuthPage() {
   );
 }
 
+//Handles user login functionality
 function LoginForm() {
+  //Email and password, plus a icon for password visibility
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [showPassword, setShowPassword] = useState(false); //Password visibility
   const router = useRouter();
 
+  //Function to handle login form submission
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -227,6 +80,7 @@ function LoginForm() {
           className="w-full p-2 border rounded text-black" 
           required
         />
+        {/* Login account page password toggle */}
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
@@ -240,6 +94,7 @@ function LoginForm() {
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
+              {/* Path for "hide password" icon */}
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -255,6 +110,7 @@ function LoginForm() {
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
+              {/* Path for "show password" icon */}
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -329,6 +185,7 @@ function SignupForm() {
           className="w-full p-2 border rounded text-black" 
           required
         />
+        {/* Create account page password toggle */}
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
