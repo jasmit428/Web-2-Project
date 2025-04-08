@@ -145,11 +145,6 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link href="/leaderboard" className="hover:text-pink-500">
-              Leaderboard
-            </Link>
-          </li>
-          <li>
             <Link href="/profile" className="hover:text-pink-500">
               Profile
             </Link>
