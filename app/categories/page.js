@@ -14,11 +14,11 @@ export default function Categories() {
         <h1 className="text-4xl font-bold text-purple-600 mb-4">How to Play JeoparTrivia:</h1>
         <p className="text-md text-purple-700">
             1. Select a trivia category to get started. <br />
-            2. Each category has 4 subcategories and 5 difficulty levels: 100 to 500 points. <br />
+            2. Each category has four subcategories and 5 difficulty levels: 100 to 500 points. <br />
             3. Click a card to reveal a question. <br />
             4. Click the card again to see the answer. <br />
             5. Choose whether you got it right (✅) or wrong (❌) to update your score. <br />
-            7. Complete all the card questions to see your final score!
+            6. Complete all the card questions to see your final score!
         </p>
       </div>
 
